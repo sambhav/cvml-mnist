@@ -30,11 +30,14 @@ import argparse
 import sys
 import tempfile
 
+from os.path import dirname, realpath, join
+
 from tensorflow.examples.tutorials.mnist import input_data
 
 import tensorflow as tf
 
 FLAGS = None
+DATA_DIR = join(dirname(dirname(realpath(__file__))), 'data')
 
 
 def deepnn(x):
@@ -170,7 +173,7 @@ def main(_):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir', type=str,
-                                            default='/tmp/tensorflow/mnist/input_data',
+                                            default=DATA_DIR,
                                             help='Directory for storing input data')
     FLAGS, unparsed = parser.parse_known_args()
     tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
