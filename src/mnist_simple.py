@@ -1,23 +1,16 @@
-'''Trains a simple deep NN on the MNIST dataset.
-
-Gets to 98.40% test accuracy after 20 epochs
-(there is *a lot* of margin for parameter tuning).
-2 seconds per epoch on a K520 GPU.
-'''
-
-from __future__ import print_function
-
 import keras
 from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.optimizers import RMSprop
+import matplotlib.pyplot as plt
 
-
-batch_size = 128
+batch_size = 200
 num_classes = 10
 epochs = 20
-
+# Only used for filename while saving results, name appropriately
+layers = 2
+extra_name = ""
 # the data, shuffled and split between train and test sets
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
@@ -55,3 +48,21 @@ history = model.fit(x_train, y_train,
 score = model.evaluate(x_test, y_test, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
+
+# summarize history for accuracy
+plt.plot(history.history['acc'])
+plt.plot(history.history['val_acc'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig('acc_simple_{}_{}_{}{}.png'.format(batch_size, epochs, layers. extra_name))
+
+# summarize history for loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig('loss_simple_{}_{}_{}{}.png'.format(batch_size, epochs, layers, extra_name))
