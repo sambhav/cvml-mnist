@@ -56,7 +56,7 @@ plt.title('model accuracy')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
-plt.savefig('acc_simple_{}_{}_{}{}.png'.format(batch_size, epochs, layers. extra_name))
+plt.savefig('acc_simple_{}_{}_{}{}.png'.format(batch_size, epochs, layers, extra_name))
 
 # summarize history for loss
 plt.plot(history.history['loss'])
