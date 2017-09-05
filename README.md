@@ -13,8 +13,8 @@ Various experimentations with the MNIST data set and ML models
 
 * To run the code without neural nets
         
-        python src/mnsit.py
+        python src/mnsit_simple.py
 
 * To run the code with neural nets
         
-        python src/mnsit_deep.py
+        python src/mnsit_cnn.py
