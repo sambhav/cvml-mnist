@@ -34,16 +34,16 @@ def build_model(batch_size=200, num_classes=10, epochs=20, layers=2, activation_
 
     model = Sequential()
     model.add(Dense(100, kernel_regularizer=l2(l2_reg), activation=activation_fn, input_shape=(784,)))
-    if add_dropout: 
+    if add_dropout:
         model.add(Dropout(0.2))
 
     if layers >= 2:
         model.add(Dense(50, kernel_regularizer=l2(l2_reg), activation=activation_fn))
-        if add_dropout: 
+        if add_dropout:
             model.add(Dropout(0.2))
     if layers >= 3:
         model.add(Dense(30, kernel_regularizer=l2(l2_reg), activation=activation_fn))
-        if add_dropout: 
+        if add_dropout:
             model.add(Dropout(0.2))
     model.add(Dense(10, activation='softmax'))
 
@@ -121,7 +121,7 @@ def test_activation_fun(plot_type = 'activation'):
     plt.close()
 
 def test_overfitting(plot_type = 'overfitting'):
-    h1,s1 = build_model()
+    h1,s1 = build_model(epochs=40)
     plt.plot(h1.history['acc'])
     plt.plot(h1.history['val_acc'])
     plt.title('Model accuracy')
@@ -140,25 +140,24 @@ def test_overfitting(plot_type = 'overfitting'):
     plt.savefig(PLOTS_DIR + '/loss_simple_test_train.png'.format(plot_type))
     plt.close()
 
-    h2,s2 = build_model(add_dropout = True)
-    h3,s3 = build_model(l2_reg = 0.0001)
-    plt.plot(h1.history['val_acc'])
-    plt.plot(h2.history['val_acc'])
-    plt.plot(h3.history['val_acc'])
+    h2,s2 = build_model(epochs=40, add_dropout = True)
+    h3,s3 = build_model(epochs=40, l2_reg = 0.0001)
+    plt.plot(h1.history['val_loss'])
+    plt.plot(h2.history['val_loss'])
+    plt.plot(h3.history['val_loss'])
     plt.title('Model accuracy using different overfitting techniques')
-    plt.ylabel('accuracy')
+    plt.ylabel('loss')
     plt.xlabel('epoch')
     legend1 = 'No technique used(Test accuracy - {})'.format(s1[1])
     legend2 = 'Dropout(Test accuracy - {})'.format(s2[1])
     legend3 = 'L2 regularization(Test accuracy - {})'.format(s3[1])
     plt.legend([legend1, legend2, legend3], loc='lower right')
-    plt.savefig(PLOTS_DIR + '/acc_simple_{}.png'.format(plot_type))
+    plt.savefig(PLOTS_DIR + '/loss_simple_{}.png'.format(plot_type))
     plt.close()
-    
+
 
 if __name__ == '__main__':
     # test_no_of_layers()
     # # test_epochs()
     # test_activation_fun()
     # test_overfitting()
-
