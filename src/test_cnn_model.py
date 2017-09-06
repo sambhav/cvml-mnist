@@ -6,7 +6,7 @@ from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
-from keras.regularizers import l2, l1
+from keras.regularizers import l2
 from keras import backend as K
 import matplotlib.pyplot as plt
 
@@ -16,8 +16,8 @@ if not os.path.exists(PLOTS_DIR):
     os.makedirs(PLOTS_DIR)
 
 
-def build_model(batch_size=128, num_classes=10, epochs=10, layers=1, activation_fn='relu', add_dropout=False, 
-                kernel_size = (3,3), no_of_kernels=32, dense_layer=True, l2_reg=0.0):
+def build_model(batch_size=128, num_classes=10, epochs=10, layers=1, activation_fn='relu', add_dropout=False,
+                kernel_size=(3, 3), no_of_kernels=32, dense_layer=True, l2_reg=0.0):
 
     # input image dimensions
     img_rows, img_cols = 28, 28
@@ -49,10 +49,10 @@ def build_model(batch_size=128, num_classes=10, epochs=10, layers=1, activation_
     model = Sequential()
     model.add(Conv2D(no_of_kernels, kernel_size=kernel_size,
                      activation=activation_fn,
-                     input_shape=input_shape, kernel_regularizer = l2(l2_reg)))
+                     input_shape=input_shape, kernel_regularizer=l2(l2_reg)))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     if layers >= 2:
-        model.add(Conv2D(64, kernel_size, activation=activation_fn, kernel_regularizer = l2(l2_reg)))
+        model.add(Conv2D(64, kernel_size, activation=activation_fn, kernel_regularizer=l2(l2_reg)))
         model.add(MaxPooling2D(pool_size=(2, 2)))
     if add_dropout:
         model.add(Dropout(0.2))
@@ -77,10 +77,11 @@ def build_model(batch_size=128, num_classes=10, epochs=10, layers=1, activation_
     print('Test accuracy:', score[1])
     return history, score
 
-def test_no_of_layers(plot_type = 'layers'):
-    h1,s1 = build_model(layers=1, dense_layer = False)
-    h2,s2 = build_model(layers=1)
-    h3,s3 = build_model(layers=2)
+
+def test_no_of_layers(plot_type='layers'):
+    h1, s1 = build_model(layers=1, dense_layer=False)
+    h2, s2 = build_model(layers=1)
+    h3, s3 = build_model(layers=2)
 
     plt.plot(h1.history['val_acc'])
     plt.plot(h2.history['val_acc'])
@@ -95,10 +96,11 @@ def test_no_of_layers(plot_type = 'layers'):
     plt.savefig(PLOTS_DIR + '/acc_cnn_{}.png'.format(plot_type))
     plt.close()
 
-def test_activation_fun(plot_type = 'activation'):
-    h1,s1 = build_model(activation_fn='relu')
-    h2,s2 = build_model(activation_fn='sigmoid')
-    h3,s3 = build_model(activation_fn='tanh')
+
+def test_activation_fun(plot_type='activation'):
+    h1, s1 = build_model(activation_fn='relu')
+    h2, s2 = build_model(activation_fn='sigmoid')
+    h3, s3 = build_model(activation_fn='tanh')
 
     plt.plot(h1.history['val_acc'])
     plt.plot(h2.history['val_acc'])
@@ -113,9 +115,10 @@ def test_activation_fun(plot_type = 'activation'):
     plt.savefig(PLOTS_DIR + '/acc_cnn_{}.png'.format(plot_type))
     plt.close()
 
-def test_kernel_size(plot_type = 'kernel_size'):
-    h1,s1 = build_model(kernel_size = (3,3))
-    h2,s2 = build_model(kernel_size = (5,5))
+
+def test_kernel_size(plot_type='kernel_size'):
+    h1, s1 = build_model(kernel_size=(3, 3))
+    h2, s2 = build_model(kernel_size=(5, 5))
 
     plt.plot(h1.history['val_acc'])
     plt.plot(h2.history['val_acc'])
@@ -129,9 +132,9 @@ def test_kernel_size(plot_type = 'kernel_size'):
     plt.close()
 
 
-def test_no_of_kernels(plot_type = 'no_of_kernels'):
-    h1,s1 = build_model(no_of_kernels = 20)
-    h2,s2 = build_model(no_of_kernels = 32)
+def test_no_of_kernels(plot_type='no_of_kernels'):
+    h1, s1 = build_model(no_of_kernels=20)
+    h2, s2 = build_model(no_of_kernels=32)
 
     plt.plot(h1.history['val_acc'])
     plt.plot(h2.history['val_acc'])
@@ -144,8 +147,9 @@ def test_no_of_kernels(plot_type = 'no_of_kernels'):
     plt.savefig(PLOTS_DIR + '/acc_cnn_{}.png'.format(plot_type))
     plt.close()
 
-def test_overfitting(plot_type = 'overfitting'):
-    h1,s1 = build_model()
+
+def test_overfitting(plot_type='overfitting'):
+    h1, s1 = build_model(epochs=20)
     plt.plot(h1.history['acc'])
     plt.plot(h1.history['val_acc'])
     plt.title('Model accuracy')
@@ -164,21 +168,21 @@ def test_overfitting(plot_type = 'overfitting'):
     plt.savefig(PLOTS_DIR + '/loss_cnn_test_train.png'.format(plot_type))
     plt.close()
 
-    h2,s2 = build_model(add_dropout = True)
-    h3,s3 = build_model(l2_reg = 0.01)
-    plt.plot(h1.history['val_acc'])
-    plt.plot(h2.history['val_acc'])
-    plt.plot(h3.history['val_acc'])
-    plt.title('Model accuracy using different overfitting techniques')
+    h2, s2 = build_model(epochs=20, add_dropout=True)
+    h3, s3 = build_model(epochs=20, l2_reg=0.01)
+    plt.plot(h1.history['val_loss'])
+    plt.plot(h2.history['val_loss'])
+    plt.plot(h3.history['val_loss'])
+    plt.title('Model loss using different overfitting techniques')
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     legend1 = 'No technique used(Test accuracy - {})'.format(s1[1])
     legend2 = 'Dropout(Test accuracy - {})'.format(s2[1])
     legend3 = 'L2 regularization(Test accuracy - {})'.format(s3[1])
-    plt.legend([legend1, legend2, legend3], loc='lower right')
-    plt.savefig(PLOTS_DIR + '/acc_cnn_{}.png'.format(plot_type))
+    plt.legend([legend1, legend2, legend3], loc='upper right')
+    plt.savefig(PLOTS_DIR + '/loss_cnn_{}.png'.format(plot_type))
     plt.close()
-    
+
 
 if __name__ == '__main__':
     # test_no_of_layers()
@@ -186,4 +190,4 @@ if __name__ == '__main__':
     # test_kernel_size()
     # test_no_of_kernels()
     # test_overfitting()
-
+    pass
