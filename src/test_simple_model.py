@@ -84,21 +84,16 @@ def test_no_of_layers(plot_type='layers'):
     plt.close()
 
 
-def test_epochs(plot_type='epochs'):
-    h1, s1 = build_model(epochs=10)
-    h2, s2 = build_model(epochs=20)
-    h3, s3 = build_model(epochs=50)
+def test_epochs(plot_type = 'epochs'):
+    h1,s1 = build_model(epochs=100)
 
     plt.plot(h1.history['val_acc'])
-    plt.plot(h2.history['val_acc'])
-    plt.plot(h3.history['val_acc'])
-    plt.title('Model accuracy based on no. of epochs')
+    plt.plot(h1.history['val_loss'])
+
+    plt.title('Model accuracy and loss')
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
-    legend1 = '10 epochs(Test accuracy - {})'.format(s1[1])
-    legend2 = '20 epochs(Test accuracy - {})'.format(s2[1])
-    legend3 = '50 epochs(Test accuracy - {})'.format(s3[1])
-    plt.legend([legend1, legend2, legend3], loc='lower right')
+    
     plt.savefig(PLOTS_DIR + '/acc_simple_{}.png'.format(plot_type))
     plt.close()
 

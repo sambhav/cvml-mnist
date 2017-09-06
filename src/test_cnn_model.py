@@ -135,18 +135,21 @@ def test_kernel_size(plot_type='kernel_size'):
     plt.close()
 
 
-def test_no_of_kernels(plot_type='no_of_kernels'):
-    h1, s1 = build_model(no_of_kernels=20)
-    h2, s2 = build_model(no_of_kernels=32)
+def test_no_of_kernels(plot_type = 'no_of_kernels'):
+    h1,s1 = build_model(no_of_kernels = 5)
+    h2,s2 = build_model(no_of_kernels = 20)
+    h3,s3 = build_model(no_of_kernels = 32)
 
     plt.plot(h1.history['val_acc'])
     plt.plot(h2.history['val_acc'])
+    plt.plot(h3.history['val_acc'])
     plt.title('Model accuracy based on no of kernels')
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
-    legend1 = '20 kernels(Test accuracy - {})'.format(s1[1])
-    legend2 = '32 kernels(Test accuracy - {})'.format(s2[1])
-    plt.legend([legend1, legend2], loc='lower right')
+    legend1 = '5 kernels(Test accuracy - {})'.format(s1[1])
+    legend2 = '20 kernels(Test accuracy - {})'.format(s2[1])
+    legend3 = '32 kernels(Test accuracy - {})'.format(s3[1])
+    plt.legend([legend1, legend2, legend3], loc='lower right')
     plt.savefig(PLOTS_DIR + '/acc_cnn_{}.png'.format(plot_type))
     plt.close()
 
