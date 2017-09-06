@@ -129,8 +129,8 @@ def test_kernel_size(plot_type='kernel_size'):
     plt.xlabel('epoch')
     legend1 = '3x3 kernel(Test accuracy - {})'.format(s1[1])
     legend2 = '5x5 kernel(Test accuracy - {})'.format(s2[1])
-    legend2 = '10x10 kernel(Test accuracy - {})'.format(s2[1])
-    plt.legend([legend1, legend2], loc='lower right')
+    legend3 = '10x10 kernel(Test accuracy - {})'.format(s3[1])
+    plt.legend([legend1, legend2, legend3], loc='lower right')
     plt.savefig(PLOTS_DIR + '/acc_cnn_{}.png'.format(plot_type))
     plt.close()
 
