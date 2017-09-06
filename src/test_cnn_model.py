@@ -119,14 +119,17 @@ def test_activation_fun(plot_type='activation'):
 def test_kernel_size(plot_type='kernel_size'):
     h1, s1 = build_model(kernel_size=(3, 3))
     h2, s2 = build_model(kernel_size=(5, 5))
+    h3, s3 = build_model(kernel_size=(10, 10))
 
     plt.plot(h1.history['val_acc'])
     plt.plot(h2.history['val_acc'])
+    plt.plot(h3.history['val_acc'])
     plt.title('Model accuracy based on kernel size')
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     legend1 = '3x3 kernel(Test accuracy - {})'.format(s1[1])
     legend2 = '5x5 kernel(Test accuracy - {})'.format(s2[1])
+    legend2 = '10x10 kernel(Test accuracy - {})'.format(s2[1])
     plt.legend([legend1, legend2], loc='lower right')
     plt.savefig(PLOTS_DIR + '/acc_cnn_{}.png'.format(plot_type))
     plt.close()
